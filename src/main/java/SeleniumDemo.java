@@ -14,8 +14,16 @@ public class SeleniumDemo {
 
         // WebElement locators will be added here
         WebElement usernameInputField = driver.findElement(By.id("username"));
+        WebElement usernameInputFieldXpath = driver.findElement(By.xpath("//input[@id='username']"));
+        WebElement usernameInputFieldCss = driver.findElement(By.cssSelector("input[id='username']"));
+
         WebElement passwordInputField = driver.findElement(By.name("password"));
+        WebElement passwordInputXpath = driver.findElement(By.xpath("//input[@name='password']"));
+        WebElement passwordInputCss = driver.findElement(By.cssSelector("input[name='password']"));
+
         WebElement submitButton = driver.findElement(By.className("btn"));
+        WebElement submitButtonXpath = driver.findElement(By.xpath("//button[@id='submit']"));
+        WebElement submitButtonCss = driver.findElement(By.cssSelector("button[id='submit']"));
 
         WebElement linkTextLocator = driver.findElement(By.linkText("Practice Test Automation."));
         WebElement partialLinkTexLocator = driver.findElement(By.partialLinkText("Test Automation"));
