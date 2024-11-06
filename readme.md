@@ -1,3 +1,6 @@
 # Project Set Up
-#### - Install java
-#### - Install maven
+#### 1. Install java
+#### 2. Install maven
+
+# Dependencies
+#### 1. add Selenium to the pom.xml
