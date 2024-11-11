@@ -7,11 +7,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static java.lang.Thread.sleep;
+
 public class PositiveLoginTests {
 
     @Test
     public void TestLoginFunctionality() {
         WebDriver driver = new ChromeDriver();
+        // WebDriver driver = new SafariDriver();
         driver.get("https://practicetestautomation.com/practice-test-login/");
 
         WebElement usernameInputField = driver.findElement(By.xpath("//input[@id='username']"));
@@ -21,6 +24,12 @@ public class PositiveLoginTests {
         usernameInputField.sendKeys("student");
         passwordInputField.sendKeys("Password123");
         submitButton.click();
+
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         String expectedUrl = "https://practicetestautomation.com/logged-in-successfully/";
         String actualUrl = driver.getCurrentUrl();
