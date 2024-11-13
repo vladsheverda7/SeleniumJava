@@ -12,4 +12,7 @@
 
 # Test Run
 
-#### 1. run "mvn test" or " mvn test clean" in the terminal
+#### 1. run "mvn test" or " mvn test clean" in the terminal to run regression suite as default
+
+#### 2. run "mvn test clean -DsuiteXmlFile=SmokeSuite.xml" to run smoke test
+
