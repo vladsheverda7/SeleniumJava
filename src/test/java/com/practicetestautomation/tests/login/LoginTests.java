@@ -4,18 +4,41 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import static java.lang.Thread.sleep;
 
 public class LoginTests {
+
+    private WebDriver driver;
+
+    @Parameters("browser")
+    @BeforeMethod(alwaysRun = true)
+    public void SetUp(@Optional("chrome") String browser) {
+        switch (browser.toLowerCase()) {
+            case "chrome":
+                driver = new ChromeDriver();
+                break;
+            case "safari":
+                driver = new SafariDriver();
+                break;
+            default:
+                System.out.println("Configuration for " + browser + " is missing, so running tests in Chrome by default");
+                driver = new ChromeDriver();
+                break;
+        }
+        driver.get("https://practicetestautomation.com/practice-test-login/");
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void TearDown() {
+        driver.quit();
+    }
+
     @Test(groups = {"positive", "regression", "smoke"})
     public void TestLoginFunctionality() {
-        WebDriver driver = new ChromeDriver();
-        // WebDriver driver = new SafariDriver();
-        driver.get("https://practicetestautomation.com/practice-test-login/");
-
         WebElement usernameInputField = driver.findElement(By.xpath("//input[@id='username']"));
         WebElement passwordInputField = driver.findElement(By.xpath("//input[@id='password']"));
         WebElement submitButton = driver.findElement(By.xpath("//button[@id='submit']"));
@@ -40,20 +63,16 @@ public class LoginTests {
 
         WebElement logOutButton = driver.findElement(By.linkText("Log out"));
         Assert.assertTrue(logOutButton.isDisplayed());
-
-        driver.quit();
     }
 
+    @Parameters({"username", "password", "expectedErrorMessage"})
     @Test(groups = {"negative", "regression"})
-    public void IncorrectUsernameTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://practicetestautomation.com/practice-test-login/");
-
+    public void NegativeLoginTest(String username, String password, String expectedErrorMessage) {
         WebElement usernameInputField = driver.findElement(By.xpath("//input[@id='username']"));
-        usernameInputField.sendKeys("incorrectUser");
+        usernameInputField.sendKeys(username);
 
         WebElement passwordInputField = driver.findElement(By.xpath("//input[@id='password']"));
-        passwordInputField.sendKeys("Password123");
+        passwordInputField.sendKeys(password);
 
         WebElement submitButton = driver.findElement(By.xpath("//button[@id='submit']"));
         submitButton.click();
@@ -64,44 +83,11 @@ public class LoginTests {
             throw new RuntimeException(e);
         }
 
-        WebElement incorrectUserNameMessage = driver.findElement(By.id("error"));
-        Assert.assertTrue(incorrectUserNameMessage.isDisplayed());
+        WebElement errorMessage = driver.findElement(By.id("error"));
+        Assert.assertTrue(errorMessage.isDisplayed());
 
-        String expectedIncorrectUserNameMessage = "Your username is invalid!";
-        String actualIncorrectUserNameMessage = incorrectUserNameMessage.getText();
+        String actualIncorrectUserNameMessage = errorMessage.getText();
 
-        Assert.assertEquals(actualIncorrectUserNameMessage, expectedIncorrectUserNameMessage);
-
-        driver.quit();
-    }
-
-    @Test(groups = {"negative", "regression"})
-    public void IncorrectPasswordTest() {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://practicetestautomation.com/practice-test-login/");
-
-        WebElement usernameInputField = driver.findElement(By.xpath("//input[@id='username']"));
-        usernameInputField.sendKeys("student");
-
-        WebElement passwordInputField = driver.findElement(By.xpath("//input[@id='password']"));
-        passwordInputField.sendKeys("incorrectPassword");
-
-        WebElement submitButton = driver.findElement(By.xpath("//button[@id='submit']"));
-        submitButton.click();
-
-        try {
-            sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        WebElement incorrectPasswordMessage = driver.findElement(By.xpath("//div[@id='error']"));
-        Assert.assertTrue(incorrectPasswordMessage.isDisplayed());
-
-        String expectedIncorrectPasswordMessage = "Your password is invalid!";
-        String actualErrorMessage = incorrectPasswordMessage.getText();
-        Assert.assertEquals(actualErrorMessage, expectedIncorrectPasswordMessage);
-
-        driver.quit();
+        Assert.assertEquals(actualIncorrectUserNameMessage, expectedErrorMessage);
     }
 }
