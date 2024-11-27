@@ -8,15 +8,22 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static java.lang.Thread.sleep;
 
 public class LoginTests {
 
     private WebDriver driver;
+    private Logger logger;
 
     @Parameters("browser")
     @BeforeMethod(alwaysRun = true)
     public void SetUp(@Optional("chrome") String browser) {
+        logger = Logger.getLogger(LoginTests.class.getName());
+        logger.setLevel(Level.INFO);
+        logger.info("Running test in + " + browser);
         switch (browser.toLowerCase()) {
             case "chrome":
                 driver = new ChromeDriver();
@@ -25,7 +32,7 @@ public class LoginTests {
                 driver = new SafariDriver();
                 break;
             default:
-                System.out.println("Configuration for " + browser + " is missing, so running tests in Chrome by default");
+                logger.warning("Configuration for " + browser + " is missing, so running tests in Chrome by default");
                 driver = new ChromeDriver();
                 break;
         }
@@ -35,16 +42,21 @@ public class LoginTests {
     @AfterMethod(alwaysRun = true)
     public void TearDown() {
         driver.quit();
+        logger.info("Browser is closed");
     }
 
     @Test(groups = {"positive", "regression", "smoke"})
     public void TestLoginFunctionality() {
+        logger.info("Starting test login functionality");
         WebElement usernameInputField = driver.findElement(By.xpath("//input[@id='username']"));
         WebElement passwordInputField = driver.findElement(By.xpath("//input[@id='password']"));
         WebElement submitButton = driver.findElement(By.xpath("//button[@id='submit']"));
 
+        logger.info("Type username");
         usernameInputField.sendKeys("student");
+        logger.info("Type password");
         passwordInputField.sendKeys("Password123");
+        logger.info("Click submit");
         submitButton.click();
 
         try {
@@ -52,7 +64,7 @@ public class LoginTests {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
+        logger.info("Verify login functionality");
         String expectedUrl = "https://practicetestautomation.com/logged-in-successfully/";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals(actualUrl, expectedUrl);
@@ -68,13 +80,17 @@ public class LoginTests {
     @Parameters({"username", "password", "expectedErrorMessage"})
     @Test(groups = {"negative", "regression"})
     public void NegativeLoginTest(String username, String password, String expectedErrorMessage) {
+        logger.info("Starting negative login test functionality");
         WebElement usernameInputField = driver.findElement(By.xpath("//input[@id='username']"));
+        logger.info("Type username:" + username);
         usernameInputField.sendKeys(username);
 
         WebElement passwordInputField = driver.findElement(By.xpath("//input[@id='password']"));
+        logger.info("Type password:" + password);
         passwordInputField.sendKeys(password);
 
         WebElement submitButton = driver.findElement(By.xpath("//button[@id='submit']"));
+        logger.info("Click submit button");
         submitButton.click();
 
         try {
@@ -83,6 +99,7 @@ public class LoginTests {
             throw new RuntimeException(e);
         }
 
+        logger.info("Verify error message: " + expectedErrorMessage);
         WebElement errorMessage = driver.findElement(By.id("error"));
         Assert.assertTrue(errorMessage.isDisplayed());
 
