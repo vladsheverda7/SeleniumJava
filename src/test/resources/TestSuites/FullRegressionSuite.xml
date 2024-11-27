@@ -24,7 +24,7 @@
     </test>
 
     <test name="Incorrect username test">
-        <parameter name="browser" value="firefox"/>
+        <parameter name="browser" value="chrome"/>
         <parameter name="username" value="incorrectUser"/>
         <parameter name="password" value="Password123"/>
         <parameter name="expectedErrorMessage" value="Your username is invalid!"/>

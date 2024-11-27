@@ -16,9 +16,12 @@
 
 #### 2. run "mvn test clean -DsuiteXmlFile=SmokeSuite.xml" to run smoke test
 
-#### 3. run "mvn test clean -DsuiteXmlFile=FullRegressionSuite.xml" to run smoke test
+#### 3. run "mvn test clean -DsuiteXmlFile=FullRegressionSuite.xml" to run regression test
 
 # Test Report
 
 #### Report can be found here target/surefire-reports/index.html
+
+# Debugging
+
 
