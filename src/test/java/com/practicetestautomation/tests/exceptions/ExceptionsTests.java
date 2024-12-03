@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -36,7 +38,7 @@ public class ExceptionsTests {
                 break;
         }
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get("https://practicetestautomation.com/practice-test-exceptions/");
     }
 
@@ -49,10 +51,12 @@ public class ExceptionsTests {
     @Test
     public void NoSuchElementExceptionTest() {
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
         WebElement addButton = driver.findElement(By.xpath("//button[@id='add_btn']"));
         addButton.click();
 
-        WebElement row2InputField = driver.findElement(By.xpath("//div[@id='row2']/input"));
+        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
         Assert.assertTrue(row2InputField.isDisplayed(), "Row 2 is not displayed");
     }
 }
