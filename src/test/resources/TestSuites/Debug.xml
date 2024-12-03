@@ -40,4 +40,14 @@
             </class>
         </classes>
     </test>
+
+    <test name="Stale Element Reference Exception">
+        <classes>
+            <class name="com.practicetestautomation.tests.exceptions.ExceptionsTests">
+                <methods>
+                    <include name="StaleElementReferenceException"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>

@@ -117,4 +117,16 @@ public class ExceptionsTests {
         String actualValue = inputField.getAttribute("value");
         Assert.assertEquals(actualValue, expectedValue);
     }
+
+    @Test
+    public void StaleElementReferenceException() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+
+        WebElement addButton = driver.findElement(By.xpath("//div[@id='row1']/button[@id='add_btn']"));
+        addButton.click();
+
+        Boolean isInvisible = wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//p[@id='instructions']")));
+
+        Assert.assertTrue(isInvisible);
+    }
 }
