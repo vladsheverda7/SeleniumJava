@@ -91,4 +91,30 @@ public class ExceptionsTests {
 
         Assert.assertEquals(actualConfirmationMessage, expectedConfirmationMessage);
     }
+
+    @Test
+    public void InvalidElementStateException() {
+
+        String expectedValue = "Sushi";
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+
+        WebElement editButton = driver.findElement(By.xpath("//div[@id='row1']/button[@id='edit_btn']"));
+        editButton.click();
+
+        WebElement inputField = driver.findElement(By.xpath("//div[@id='row1']/input"));
+        inputField.clear();
+        inputField.sendKeys(expectedValue);
+
+        WebElement saveButton = driver.findElement(By.xpath("//div[@id='row1']/button[@id='save_btn']"));
+        saveButton.click();
+
+        String expectedConfirmationMessage = "Row 1 was saved";
+        WebElement confirmationMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("confirmation")));
+        String actualConfirmationMessage = confirmationMessage.getText();
+
+        Assert.assertEquals(actualConfirmationMessage, expectedConfirmationMessage);
+
+        String actualValue = inputField.getAttribute("value");
+        Assert.assertEquals(actualValue, expectedValue);
+    }
 }

@@ -30,4 +30,14 @@
             </class>
         </classes>
     </test>
+
+    <test name="Invalid Element State Exception">
+        <classes>
+            <class name="com.practicetestautomation.tests.exceptions.ExceptionsTests">
+                <methods>
+                    <include name="InvalidElementStateException"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>
