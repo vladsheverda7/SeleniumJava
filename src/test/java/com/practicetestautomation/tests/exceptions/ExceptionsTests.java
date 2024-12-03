@@ -59,4 +59,15 @@ public class ExceptionsTests {
         WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
         Assert.assertTrue(row2InputField.isDisplayed(), "Row 2 is not displayed");
     }
+
+    @Test
+    public void timeoutExceptionTest() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
+        WebElement addButton = driver.findElement(By.xpath("//button[@id='add_btn']"));
+        addButton.click();
+
+        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
+        Assert.assertTrue(row2InputField.isDisplayed());
+    }
 }
