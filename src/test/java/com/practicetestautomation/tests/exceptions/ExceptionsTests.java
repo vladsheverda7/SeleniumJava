@@ -62,12 +62,33 @@ public class ExceptionsTests {
 
     @Test
     public void timeoutExceptionTest() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
 
         WebElement addButton = driver.findElement(By.xpath("//button[@id='add_btn']"));
         addButton.click();
 
         WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
         Assert.assertTrue(row2InputField.isDisplayed());
+    }
+
+    @Test
+    public void ElementNotInteractableException() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+
+        WebElement addButton = driver.findElement(By.xpath("//button[@id='add_btn']"));
+        addButton.click();
+
+        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
+        row2InputField.sendKeys("Sushi");
+
+        WebElement saveButton = driver.findElement(By.xpath("//div[@id='row2']/button[@id='save_btn']"));
+        saveButton.click();
+
+        String expectedConfirmationMessage = "Row 2 was saved";
+
+        WebElement confirmationMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("confirmation")));
+        String actualConfirmationMessage = confirmationMessage.getText();
+
+        Assert.assertEquals(actualConfirmationMessage, expectedConfirmationMessage);
     }
 }

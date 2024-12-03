@@ -20,4 +20,14 @@
             </class>
         </classes>
     </test>
+
+    <test name="Element Not Interactable Exception">
+        <classes>
+            <class name="com.practicetestautomation.tests.exceptions.ExceptionsTests">
+                <methods>
+                    <include name="ElementNotInteractableException"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>
