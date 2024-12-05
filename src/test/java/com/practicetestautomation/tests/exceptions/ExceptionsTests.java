@@ -1,5 +1,6 @@
 package com.practicetestautomation.tests.exceptions;
 
+import com.practicetestautomation.pageobjects.ExceptionPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,7 +40,6 @@ public class ExceptionsTests {
         }
 
         // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("https://practicetestautomation.com/practice-test-exceptions/");
     }
 
     @AfterMethod(alwaysRun = true)
@@ -50,14 +50,11 @@ public class ExceptionsTests {
 
     @Test
     public void NoSuchElementExceptionTest() {
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        WebElement addButton = driver.findElement(By.xpath("//button[@id='add_btn']"));
-        addButton.click();
-
-        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
-        Assert.assertTrue(row2InputField.isDisplayed(), "Row 2 is not displayed");
+        ExceptionPage exceptionPage = new ExceptionPage(driver);
+        exceptionPage.visit();
+        exceptionPage.clickAddButton();
+        
+        Assert.assertTrue(exceptionPage.isRow2InputFieldDisplayed(), "Row 2 is not displayed");
     }
 
     @Test
