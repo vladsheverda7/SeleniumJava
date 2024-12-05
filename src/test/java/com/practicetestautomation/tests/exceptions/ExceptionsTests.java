@@ -1,48 +1,11 @@
 package com.practicetestautomation.tests.exceptions;
 
 import com.practicetestautomation.pageobjects.ExceptionPage;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.safari.SafariDriver;
+import com.practicetestautomation.tests.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.Test;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-public class ExceptionsTests {
-
-    private WebDriver driver;
-    private Logger logger;
-
-    @Parameters("browser")
-    @BeforeMethod(alwaysRun = true)
-    public void SetUp(@Optional("chrome") String browser) {
-        logger = Logger.getLogger(ExceptionsTests.class.getName());
-        logger.setLevel(Level.INFO);
-        logger.info("Running test in + " + browser);
-        switch (browser.toLowerCase()) {
-            case "chrome":
-                driver = new ChromeDriver();
-                break;
-            case "safari":
-                driver = new SafariDriver();
-                break;
-            default:
-                logger.warning("Configuration for " + browser + " is missing, so running tests in Chrome by default");
-                driver = new ChromeDriver();
-                break;
-        }
-
-        // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void TearDown() {
-        driver.quit();
-        logger.info("Browser is closed");
-    }
-
+public class ExceptionsTests extends BaseTest {
     @Test
     public void noSuchElementExceptionTest() {
         ExceptionPage exceptionPage = new ExceptionPage(driver);

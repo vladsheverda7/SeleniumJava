@@ -50,4 +50,10 @@
             </class>
         </classes>
     </test>
+
+    <test name="Expections Tests">
+        <classes>
+            <class name="com.practicetestautomation.tests.exceptions.ExceptionsTests"/>
+        </classes>
+    </test>
 </suite>
