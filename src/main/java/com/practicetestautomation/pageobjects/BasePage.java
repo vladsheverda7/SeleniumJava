@@ -47,4 +47,17 @@ public class BasePage {
             return false;
         }
     }
+
+    protected String getInputFieldText(By locator) {
+        return driver.findElement(locator).getAttribute("value");
+    }
+
+    protected boolean isElementHidden(By locator) {
+        try {
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
+    }
 }

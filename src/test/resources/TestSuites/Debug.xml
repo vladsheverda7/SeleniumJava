@@ -5,7 +5,7 @@
         <classes>
             <class name="com.practicetestautomation.tests.exceptions.ExceptionsTests">
                 <methods>
-                    <include name="NoSuchElementExceptionTest"/>
+                    <include name="noSuchElementExceptionTest"/>
                 </methods>
             </class>
         </classes>
@@ -25,7 +25,7 @@
         <classes>
             <class name="com.practicetestautomation.tests.exceptions.ExceptionsTests">
                 <methods>
-                    <include name="ElementNotInteractableException"/>
+                    <include name="elementNotInteractableException"/>
                 </methods>
             </class>
         </classes>
@@ -35,7 +35,7 @@
         <classes>
             <class name="com.practicetestautomation.tests.exceptions.ExceptionsTests">
                 <methods>
-                    <include name="InvalidElementStateException"/>
+                    <include name="invalidElementStateException"/>
                 </methods>
             </class>
         </classes>
@@ -45,7 +45,7 @@
         <classes>
             <class name="com.practicetestautomation.tests.exceptions.ExceptionsTests">
                 <methods>
-                    <include name="StaleElementReferenceException"/>
+                    <include name="taleElementReferenceException"/>
                 </methods>
             </class>
         </classes>

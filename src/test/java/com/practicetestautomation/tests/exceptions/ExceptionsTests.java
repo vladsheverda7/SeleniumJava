@@ -1,17 +1,12 @@
 package com.practicetestautomation.tests.exceptions;
 
 import com.practicetestautomation.pageobjects.ExceptionPage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.safari.SafariDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
-import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,81 +44,56 @@ public class ExceptionsTests {
     }
 
     @Test
-    public void NoSuchElementExceptionTest() {
+    public void noSuchElementExceptionTest() {
         ExceptionPage exceptionPage = new ExceptionPage(driver);
         exceptionPage.visit();
         exceptionPage.clickAddButton();
-        
+
         Assert.assertTrue(exceptionPage.isRow2InputFieldDisplayed(), "Row 2 is not displayed");
     }
 
     @Test
     public void timeoutExceptionTest() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+        ExceptionPage exceptionPage = new ExceptionPage(driver);
+        exceptionPage.visit();
+        exceptionPage.clickAddButton();
 
-        WebElement addButton = driver.findElement(By.xpath("//button[@id='add_btn']"));
-        addButton.click();
-
-        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
-        Assert.assertTrue(row2InputField.isDisplayed());
+        Assert.assertTrue(exceptionPage.isRow2InputFieldDisplayed(), "Row 2 is not displayed");
     }
 
     @Test
-    public void ElementNotInteractableException() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+    public void elementNotInteractableException() {
+        ExceptionPage exceptionPage = new ExceptionPage(driver);
+        exceptionPage.visit();
+        exceptionPage.clickAddButton();
+        exceptionPage.isRow2InputFieldDisplayed();
+        exceptionPage.enterRow2InputFieldValue("Sushi");
+        exceptionPage.clickSave2ButtonLocator();
 
-        WebElement addButton = driver.findElement(By.xpath("//button[@id='add_btn']"));
-        addButton.click();
-
-        WebElement row2InputField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@id='row2']/input")));
-        row2InputField.sendKeys("Sushi");
-
-        WebElement saveButton = driver.findElement(By.xpath("//div[@id='row2']/button[@id='save_btn']"));
-        saveButton.click();
-
-        String expectedConfirmationMessage = "Row 2 was saved";
-
-        WebElement confirmationMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("confirmation")));
-        String actualConfirmationMessage = confirmationMessage.getText();
-
-        Assert.assertEquals(actualConfirmationMessage, expectedConfirmationMessage);
+        Assert.assertEquals(exceptionPage.getConfirmationMessage(), "Row 2 was saved");
     }
 
     @Test
-    public void InvalidElementStateException() {
+    public void invalidElementStateException() {
+        String newValue = "Sushi";
 
-        String expectedValue = "Sushi";
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+        ExceptionPage exceptionPage = new ExceptionPage(driver);
+        exceptionPage.visit();
+        exceptionPage.clearRow1InputField();
+        exceptionPage.enterRow1InputFieldValue(newValue);
+        exceptionPage.clickSave1ButtonLocator();
 
-        WebElement editButton = driver.findElement(By.xpath("//div[@id='row1']/button[@id='edit_btn']"));
-        editButton.click();
+        Assert.assertEquals(exceptionPage.getConfirmationMessage(), "Row 1 was saved");
 
-        WebElement inputField = driver.findElement(By.xpath("//div[@id='row1']/input"));
-        inputField.clear();
-        inputField.sendKeys(expectedValue);
-
-        WebElement saveButton = driver.findElement(By.xpath("//div[@id='row1']/button[@id='save_btn']"));
-        saveButton.click();
-
-        String expectedConfirmationMessage = "Row 1 was saved";
-        WebElement confirmationMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("confirmation")));
-        String actualConfirmationMessage = confirmationMessage.getText();
-
-        Assert.assertEquals(actualConfirmationMessage, expectedConfirmationMessage);
-
-        String actualValue = inputField.getAttribute("value");
-        Assert.assertEquals(actualValue, expectedValue);
+        Assert.assertEquals(exceptionPage.getRow1FieldValue(), newValue);
     }
 
     @Test
-    public void StaleElementReferenceException() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+    public void staleElementReferenceException() {
+        ExceptionPage exceptionPage = new ExceptionPage(driver);
+        exceptionPage.visit();
+        exceptionPage.clickAddButton();
 
-        WebElement addButton = driver.findElement(By.xpath("//div[@id='row1']/button[@id='add_btn']"));
-        addButton.click();
-
-        Boolean isInvisible = wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//p[@id='instructions']")));
-
-        Assert.assertTrue(isInvisible);
+        Assert.assertTrue(exceptionPage.isInstructionsHidden());
     }
 }
