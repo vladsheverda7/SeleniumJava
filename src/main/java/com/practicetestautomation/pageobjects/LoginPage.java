@@ -3,22 +3,19 @@ package com.practicetestautomation.pageobjects;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-
-public class LoginPage {
-    private final WebDriver driver;
-    private WebDriverWait wait;
-    private final By usernameInputLocator = By.xpath("//input[@id='username']");
-    private final By passwordInputLocator = By.xpath("//input[@id='password']");
-    private final By submitButtonLocator = By.xpath("//input[@id='submit']");
-    private final By errorMessageLocator = By.id("error");
+public class LoginPage extends BasePage {
+    private By usernameInputLocator = By.xpath("//input[@id='username']");
+    private By passwordInputLocator = By.xpath("//input[@id='password']");
+    private By submitButtonLocator = By.xpath("//button[@id='submit']");
+    private By errorMessageLocator = By.id("error");
 
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+        super(driver);
+    }
+
+    public void visit() {
+        super.visit("https://practicetestautomation.com/practice-test-login/");
     }
 
     private void enterUserName(String username) {
@@ -42,7 +39,7 @@ public class LoginPage {
     }
 
     public String getErrorMessage() {
-        WebElement errorMessageElement = wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessageLocator));
+        WebElement errorMessageElement = waitForElement(errorMessageLocator);
         return errorMessageElement.getText();
     }
 }
